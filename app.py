@@ -3,20 +3,17 @@ import datetime as dt
 from datetime import datetime
 
 import sqlalchemy
-from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
+from sqlalchemy.ext.automap import automap_base
+
 
 from flask import Flask, jsonify
 
 
-#################################################
-# Database Setup
-#################################################
-# Reflect Database into ORM class
 engine = create_engine("sqlite:///Resources/hawaii.sqlite")
 
-# Reflect Database into ORM class
+
 Base = automap_base()
 Base.prepare(engine, reflect=True)
 
@@ -24,14 +21,13 @@ Base.prepare(engine, reflect=True)
 Measurement = Base.classes.measurement
 Station = Base.classes.measurement
 
-#################################################
+
 # Flask Setup
-#################################################
 app = Flask(__name__)
 
-#################################################
-# Flask Routes
-#################################################
+
+# Flask Routes - Thank you for helping with this Dan - really appreciated
+
 
 @app.route("/")
 def welcome():
@@ -82,11 +78,11 @@ def stations():
 
 @app.route("/api/v1.0/tobs")
 def tobs():
-    """Return a list of temperature observations for the past year"""
+    """temperature observations for the past year"""
     session = Session(engine)
     # Retrieve all date values from latest to earliest (descending order)
     dates = session.query(Measurement.date).order_by(Measurement.date.desc()).all()
-    # Create reference variables for the earliest and latest dates
+    # Create reference variables for the earliest and latest dates - Thank you Dan for helping create the reference variables
     latest_date = datetime.strptime(dates[0][0], '%Y-%m-%d')
     # Query date and tobs for the previous year
     tobs = session.query(Measurement.date,func.avg(Measurement.tobs)).\
@@ -124,7 +120,7 @@ def date_range(start,end):
     # Convert list of tuples into normal list
     range_lst = list(np.ravel(range_stats))
 
-    # If the first element is null, then return an error statement
+    # If the first element is null, then return an error statement - Dan you were instrumental in helping with this code- much appreciated.
     if range_lst[0] is None:
         return jsonify({"error": f"Temperature stats for date range {start} to {end} was not found. Please choose another date range."}), 404
     return jsonify(range_lst) 
