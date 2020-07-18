@@ -49,7 +49,7 @@ def welcome():
 
 @app.route("/api/v1.0/precipitation")
 def precipitation():
-    """Return a dictionary with date keys and precipitation values"""
+    """Return a dictionary with date keys and precipitation values. Dan you helped simplified this concept, much appreciate""" 
     # Query all dates and prcp values
     session = Session(engine)
     prcp_by_date = session.query(Measurement.date,func.sum(Measurement.prcp)).\
@@ -78,7 +78,7 @@ def stations():
 
 @app.route("/api/v1.0/tobs")
 def tobs():
-    """temperature observations for the past year"""
+    """temperature observations for the past year. Dan thanks for the assistance on this one"""
     session = Session(engine)
     # Retrieve all date values from latest to earliest (descending order)
     dates = session.query(Measurement.date).order_by(Measurement.date.desc()).all()
@@ -98,13 +98,13 @@ def tobs():
 def date(start):
     """Return list of minimum temp, average temp and max temp for a given start date"""
     session = Session(engine)
-    # Query temperature stats (i.e. minimum, average, maximum) for all dates greater than and equal to the start date
+    # Query temperature stats (i.e. minimum, average, maximum) for all dates greater than and equal to the start date. Dan thanks for helping with the functions.
     date_stats = session.query(func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).\
             filter(Measurement.date >= start).all()
     # Convert list of tuples into normal list
     date_lst = list(np.ravel(date_stats))
 
-    # If the first element is null, then return an error statement
+    # If the first element is null, then return an error statement. Thank you for the 404 error Dan.
     if date_lst[0] is None:
         return jsonify({"error": f"Temperature stats for {start} was not found. Please choose an earlier date."}), 404
     return jsonify(date_lst)
