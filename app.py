@@ -49,7 +49,7 @@ def welcome():
 
 @app.route("/api/v1.0/precipitation")
 def precipitation():
-    """Return a dictionary with date keys and precipitation values. Dan you helped simplified this concept, much appreciate""" 
+    """Return a dictionary with date keys and precipitation values. Dan you helped simplify this concept, much appreciated""" 
     # Query all dates and prcp values
     session = Session(engine)
     prcp_by_date = session.query(Measurement.date,func.sum(Measurement.prcp)).\
